@@ -227,9 +227,7 @@ static void SeedRngWithRtc(void)
     #elif RNGUNIT == 1
     u32 seed = RtcGetMinuteCount();
     #endif
-    MgbaPrintf(MGBA_LOG_INFO, "%d", seed);
     seed = (seed >> 16) ^ (seed & 0xFFFF);
-    MgbaPrintf(MGBA_LOG_INFO, "%d after", seed);
     SeedRng(seed);
 }
 #endif
