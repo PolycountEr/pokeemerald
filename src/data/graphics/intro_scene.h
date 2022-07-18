@@ -44,4 +44,5 @@ const u32 gIntroBubbles_Gfx[] = INCBIN_U32("graphics/intro/scene_3/bubbles.4bpp.
 const u16 gIntroBubbles_Pal[] = INCBIN_U16("graphics/intro/scene_3/bubbles.gbapal");
 
 const u32 gIntroFlygonSilhouette_Gfx[] = INCBIN_U32("graphics/intro/scene_1/flygon.4bpp.lz");
+const u32 gIntroLatiSilhouette_Gfx[] = INCBIN_U32("graphics/intro/scene_1/lati.4bpp.lz");
 const u32 gIntroSparkle_Gfx[] = INCBIN_U32("graphics/intro/scene_1/sparkle.4bpp.lz");

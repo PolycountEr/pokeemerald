@@ -16,6 +16,12 @@
 #include "constants/easy_chat.h"
 #include "constants/trainer_hill.h"
 
+#define SCENERY_BEHAVIOR 1 //randomize between tree and cloud skyline in intro2/cycling scene
+#define RNGFIX TRUE
+#define RNGUNIT 0
+#define SCENE1_BEHAVIOR 1 //randomize between Lati and Flygon silhouette
+#define POKEBLOCK_BUGFIX 1
+
 // Prevent cross-jump optimization.
 #define BLOCK_CROSS_JUMP asm("");
 

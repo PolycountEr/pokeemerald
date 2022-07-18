@@ -971,6 +971,11 @@ static const struct CompressedSpriteSheet sSpriteSheet_FlygonSilhouette[] =
     {gIntroFlygonSilhouette_Gfx, 0x400, TAG_FLYGON_SILHOUETTE},
     {},
 };
+static const struct CompressedSpriteSheet sSpriteSheet_LatiSilhouette[] =
+{
+    {gIntroLatiSilhouette_Gfx, 0x400, TAG_FLYGON_SILHOUETTE},
+    {},
+};
 static const struct SpritePalette sSpritePalettes_Intro1[] =
 {
     {sIntroDrops_Pal, PALTAG_DROPS},
@@ -1184,7 +1189,19 @@ static void Task_Scene1_Load(u8 taskId)
     SetGpuReg(REG_OFFSET_BG1CNT, BGCNT_PRIORITY(1) | BGCNT_CHARBASE(0) | BGCNT_SCREENBASE(18) | BGCNT_16COLOR | BGCNT_TXT256x512);
     SetGpuReg(REG_OFFSET_BG0CNT, BGCNT_PRIORITY(0) | BGCNT_CHARBASE(0) | BGCNT_SCREENBASE(16) | BGCNT_16COLOR | BGCNT_TXT256x512);
     LoadCompressedSpriteSheet(sSpriteSheet_WaterDropsAndLogo);
+    #if SCENE1_BEHAVIOR == 0
     LoadCompressedSpriteSheet(sSpriteSheet_FlygonSilhouette);
+    #else
+    switch (Random() & 1)
+    {
+    case 0:
+        LoadCompressedSpriteSheet(sSpriteSheet_FlygonSilhouette);
+        break;
+    case 1:
+        LoadCompressedSpriteSheet(sSpriteSheet_LatiSilhouette);
+        break;
+    }
+    #endif
     LoadSpritePalettes(sSpritePalettes_Intro1);
     LoadCompressedSpriteSheet(sSpriteSheet_Sparkle);
     LoadSpritePalettes(sSpritePalette_Sparkle);
@@ -1357,7 +1374,11 @@ static void Task_Scene2_Load(u8 taskId)
     gIntroCredits_MovingSceneryVBase = 0;
     gIntroCredits_MovingSceneryVOffset = 0;
     sFlygonYOffset = 0;
+    #if SCENERY_BEHAVIOR == 1
+    LoadIntroPart2Graphics(Random()&1);
+    #elif SCENERY_BEHAVIOR == 0
     LoadIntroPart2Graphics(1);
+    #endif
     gTasks[taskId].func = Task_Scene2_CreateSprites;
 }
 

@@ -1,3 +1,4 @@
+#include "mgba_printf/mgba.h"
 #include "global.h"
 #include "crt0.h"
 #include "malloc.h"
@@ -103,11 +104,12 @@ void AgbMain()
     CheckForFlashMemory();
     InitMainCallbacks();
     InitMapMusic();
-#ifdef BUGFIX
+#if RNGFIX == TRUE
     SeedRngWithRtc(); // see comment at SeedRngWithRtc definition below
 #endif
     ClearDma3Requests();
     ResetBgs();
+    MgbaOpen();
     SetDefaultFontsPointer();
     InitHeap(gHeap, HEAP_SIZE);
 
@@ -217,11 +219,17 @@ void EnableVCountIntrAtLine150(void)
 }
 
 // FRLG commented this out to remove RTC, however Emerald didn't undo this!
-#ifdef BUGFIX
+#if RNGFIX == TRUE
 static void SeedRngWithRtc(void)
 {
+    #if RNGUNIT == 0
+    u32 seed = RtcGetSecondCount();
+    #elif RNGUNIT == 1
     u32 seed = RtcGetMinuteCount();
+    #endif
+    MgbaPrintf(MGBA_LOG_INFO, "%d", seed);
     seed = (seed >> 16) ^ (seed & 0xFFFF);
+    MgbaPrintf(MGBA_LOG_INFO, "%d after", seed);
     SeedRng(seed);
 }
 #endif
@@ -418,6 +426,7 @@ void ClearTrainerHillVBlankCounter(void)
 
 void DoSoftReset(void)
 {
+    MgbaClose();
     REG_IME = 0;
     m4aSoundVSyncOff();
     ScanlineEffect_Stop();
@@ -426,6 +435,7 @@ void DoSoftReset(void)
     DmaStop(3);
     SiiRtcProtect();
     SoftReset(RESET_ALL);
+    MgbaOpen();
 }
 
 void ClearPokemonCrySongs(void)
